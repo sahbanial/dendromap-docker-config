@@ -41,6 +41,8 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./loki-config:/etc/loki
+      - ./loki-data/tmp:/tmp/loki
+    user: root
     networks:
       - dendromap-api
 
@@ -51,7 +53,7 @@ services:
       - /var/log:/var/log
       - ./promtail-config:/etc/promtail
     command: -config.file=/etc/promtail/promtail.yaml
-  networks:
+    networks:
       - dendromap-api
 
     #password: root123
@@ -63,6 +65,8 @@ services:
     restart: unless-stopped
     volumes:
       - /:/host:ro,rslave
+    networks:
+      - dendromap-api
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.0
     container_name: cadvisor
@@ -78,6 +82,8 @@ services:
       - /dev/kmsg
     privileged: true
     restart: unless-stopped
+    networks:
+      - dendromap-api
   nest-backend:
     image: sahbanial/dendromap-mobile-api:staging
     container_name: nest-backend
@@ -90,5 +96,6 @@ services:
     volumes:
       - ../public:/usr/src/app/public
       - ./env:/usr/src/app/env
+      - /var/log:/var/log
     networks:
       - dendromap-api

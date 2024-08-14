@@ -4,7 +4,8 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['myapi:6003']
+         - targets:
+             - prometheus:9090
     metrics_path: '/tam-metrics'
   - job_name: 'node-exporter'
     static_configs:
@@ -13,3 +14,7 @@ scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['cadvisor:8098']
+  - job_name: 'nest-backend'
+    static_configs:
+      - targets: ['nest-backend:8090']
+    metrics_path: '/api/metrics'
